@@ -1,6 +1,8 @@
 const express = require("express");
 const { createServer } = require("node:http");
 const { Server } = require("socket.io");
+const dotenv = require("dotenv");
+dotenv.config();
 
 const app = express();
 const server = createServer(app);
@@ -9,6 +11,8 @@ const io = new Server(server, {
     origins: "*",
   },
 });
+
+const PORT = process.env.port || 5000;
 
 io.on("connection", (socket) => {
   const id = socket.handshake.query.id;
@@ -26,6 +30,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(5000, () => {
-  console.log("server running at http://localhost:5000");
+server.listen(PORT, "0.0.0.0", () => {
+  console.log(`server running at port ${PORT}`);
 });
